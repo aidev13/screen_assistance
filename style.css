@@ -1,0 +1,36 @@
+body {
+   font-family: "Poppins", sans-serif;
+   font-weight: 200;
+   font-style: normal;
+   margin: 0;
+ }
+
+.hovered-element {
+   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 1px,
+    rgb(255, 0, 0) 0px 0px 0px 1px;
+}
+
+.screen-assistance-container {
+   background-color: rgba(234, 234, 234, 0.986); 
+   position: fixed; 
+   border-radius: 12px; 
+   font-size: 12px; 
+   font-weight: bold; 
+   padding: 5px 25px; 
+   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+
+#size, #getName {
+   color: blue;
+}
+
+#sa_title {
+   margin: 0;
+}
+
+#checkBox {
+   font-size: 10px;
+   display: flex;
+   align-items: center;
+}
