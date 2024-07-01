@@ -1,7 +1,23 @@
+// Define the HTML content as a string
+const htmlContent = `
+<div id="draggable" class="screen-assistance-container noShow">
+    <h6 class="noShow margin_fix">Screen Assistance</h6>
+    <label for="borderCheck" id="checkBox" class="noShow">
+        <input type="checkbox" id="borderCheck" class="noShow"> Borders
+    </label>
+    <div id="size" class="noShow"></div>
+    <div id="getName" class="noShow"></div>
+</div>
+`;
+
+// Set the HTML content to an element using innerHTML
+document.getElementById('screen_assistance').innerHTML = htmlContent;
+
 //  Gets the size of the screen in width (W) and height (H).
 let size = document.getElementById("size");
 
-function updateSize() {
+const updateSize = () => {
+   
   size.innerHTML =
     "<p class='noShow margin_fix'> Screen W: " +
     window.innerWidth +
@@ -24,17 +40,18 @@ window.addEventListener("mouseover", (e) => {
     ? `.${e.target.className.split(" ").join(".")}`
     : "";
 
-  if (e.target.classList.contains('noShow')) {
+  if (e.target.classList.contains("noShow")) {
     elName.innerText = "";
   } else elName.innerText = `Element: ${tagName}${id}${className}`;
 
   // Check to see if user wants a border on or off
   if (checkBox.checked) {
     // Add border when element is hovered
-    if (e.target.classList.contains('noShow')) {
+    if (e.target.classList.contains("noShow")) {
       e.target.classList(null);
     } else e.target.classList.add("hovered-element");
   }
+
 
   // Keeps the user from clicking the label to check the checkbox and allows for cursor to change styles (grab and grabbing)
   const label = document.getElementById("checkBox");
@@ -58,6 +75,12 @@ window.addEventListener("mouseover", (e) => {
 window.addEventListener("mouseout", (e) => {
   e.target.classList.remove("hovered-element");
 });
+
+
+
+
+
+
 
 // --- --- --- --- //
 
