@@ -1,8 +1,9 @@
+//  Gets the size of the screen in width (W) and height (H).
 let size = document.getElementById("size");
 
 function updateSize() {
   size.innerHTML =
-    "<p id='sa_title'> Screen W: " +
+    "<p class='noShow margin_fix'> Screen W: " +
     window.innerWidth +
     ", H: " +
     window.innerHeight +
@@ -10,12 +11,11 @@ function updateSize() {
 }
 
 updateSize();
-
 window.addEventListener("resize", updateSize);
 
+// Get the #id and/or .className when hovered over
 let elName = document.getElementById("getName");
-const checkBox = document.querySelector('input')
-
+const checkBox = document.querySelector("input");
 
 window.addEventListener("mouseover", (e) => {
   const tagName = e.target.tagName.toLowerCase();
@@ -23,40 +23,43 @@ window.addEventListener("mouseover", (e) => {
   const className = e.target.className
     ? `.${e.target.className.split(" ").join(".")}`
     : "";
-    
-    if(e.target.id === 'sa_title' || e.target.id === 'draggable' || e.target.id === 'size' || e.target.id === 'getName' || e.target.id === 'checkBox' || e.target.id === 'borderCheck') {
-       elName.innerText = ''
-      } else
-      elName.innerText = `Element: ${tagName}${id}${className}`;
-      
-      
-      // Check to see if user wants a border on or off
-      if(checkBox.checked) {
-         // Add border when element is hovered
-         if (e.target.id === "draggable" || e.target.id === "size" || e.target.id === "getName" || e.target.id === 'sa_title' || e.target.id === 'checkBox' || e.target.id === 'borderCheck') {
-            e.target.classList.add(null);
-      } else e.target.classList.add("hovered-element");
-   }
-   
-   // Keeps the user from clicking the label to check the checkbox
-   const label = document.getElementById('checkBox')
-   
-   label.addEventListener("click", (event) => {
-      if (event.target !== checkBox) {
-        event.preventDefault();
-      }
-   });
+
+  if (e.target.classList.contains('noShow')) {
+    elName.innerText = "";
+  } else elName.innerText = `Element: ${tagName}${id}${className}`;
+
+  // Check to see if user wants a border on or off
+  if (checkBox.checked) {
+    // Add border when element is hovered
+    if (e.target.classList.contains('noShow')) {
+      e.target.classList(null);
+    } else e.target.classList.add("hovered-element");
+  }
+
+  // Keeps the user from clicking the label to check the checkbox and allows for cursor to change styles (grab and grabbing)
+  const label = document.getElementById("checkBox");
+
+  label.addEventListener("click", (event) => {
+    if (event.target !== checkBox) {
+      event.preventDefault();
+    }
+  });
+
+  label.addEventListener("mouseup", () => {
+    label.style.cursor = "grab";
+  });
+
+  label.addEventListener("mousedown", () => {
+    label.style.cursor = "grabbing";
+  });
 });
 
-
-
-
-
-
+// Remove border when mouse leaves the element
 window.addEventListener("mouseout", (e) => {
-   // Remove border when mouse leaves the element
-   e.target.classList.remove("hovered-element");
+  e.target.classList.remove("hovered-element");
 });
+
+// --- --- --- --- //
 
 // Make it draggable
 const draggable = document.getElementById("draggable");
