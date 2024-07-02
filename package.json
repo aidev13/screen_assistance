@@ -1,0 +1,12 @@
+{
+  "name": "screen-assistance-display-tool",
+  "version": "1.0.0",
+  "description": "## About: Screen assistance was created to help better see your layout. The dragabble window displays screen size in width (W) and height (H), element borders and element classes and id's.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "David Liebherr",
+  "license": "ISC"
+}

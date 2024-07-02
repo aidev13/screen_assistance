@@ -6,8 +6,7 @@ body {
  }
 
 .hovered-element {
-   box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 10px, rgb(255, 0, 0) 0px 0px 2px 0px;
-
+   box-shadow: rgb(255, 0, 0) 0px 0px 0px 1px;
 }
 
 .screen-assistance-container {

@@ -7,8 +7,10 @@ Screen assistance was created to help better see your layout. The dragabble wind
 ## How to install:
 
 ## How to use:
-It's simple! Once installed you will need to add the following div to you main/index html page...
+It's simple! Once installed you will need to add the following div to your main/index html page...
 
 ```html
    <div id="screen_assistance"></div> 
 ```
+
+That's it!
