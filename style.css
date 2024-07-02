@@ -22,6 +22,9 @@ body {
 
 label {
    cursor: grab;
+   font-size: 10px;
+   display: flex;
+   align-items: center;
 }
 
 .margin_fix {
@@ -34,10 +37,4 @@ label {
 
 #sa_title {
    margin: 0;
-}
-
-#checkBox {
-   font-size: 10px;
-   display: flex;
-   align-items: center;
 }

@@ -2,12 +2,15 @@
 const htmlContent = `
            <div id="draggable" class="screen-assistance-container noShow">
                <h6 class="noShow margin_fix">Screen Assistance</h6>
-               <label for="borderCheck" id="checkBox" class="noShow">
-                   <input type="checkbox" id="borderCheck" class="noShow"> Hovered borders
+
+               <label for="hoveredBorders_input" id="hoverBordersCheckBox_label" class="noShow">
+                   <input type="checkbox" id="hoveredBorders_input" class="noShow"> Hovered borders
                </label>
-               <label for="allBorderCheck" id="allCheckBox" class="noShow">
-                   <input type="checkbox" id="allBorderCheck" class="noShow"> All borders
+
+               <label for="allBorders_input" id="allBordersCheckBox_label" class="noShow">
+                   <input type="checkbox" id="allBorders_input" class="noShow"> All borders
                </label>
+
                <div id="size" class="noShow"></div>
                <div id="getName" class="noShow"></div>
            </div>
@@ -16,9 +19,14 @@ const htmlContent = `
 // Set the HTML content to an element using innerHTML
 document.getElementById("screen_assistance").innerHTML = htmlContent;
 
-//  Gets the size of the screen in width (W) and height (H).
 let size = document.getElementById("size");
 
+let elName = document.getElementById("getName");
+
+
+
+
+//  Gets the size of the screen in width (W) and height (H).
 const updateSize = () => {
   size.innerHTML =
     "<p class='noShow margin_fix'> Screen W: " +
@@ -32,8 +40,6 @@ updateSize();
 window.addEventListener("resize", updateSize);
 
 // Get the #id and/or .className when hovered over
-let elName = document.getElementById("getName");
-const checkBox = document.getElementById('borderCheck');
 
 window.addEventListener("mouseover", (e) => {
   const tagName = e.target.tagName.toLowerCase();
@@ -46,61 +52,88 @@ window.addEventListener("mouseover", (e) => {
     elName.innerText = "";
   } else elName.innerText = `Element: ${tagName}${id}${className}`;
 
-  // Check to see if user wants a border on or off
-  if (checkBox.checked) {
-    if (e.target.classList.contains("noShow")) {
-      e.target.classList.remove("hovered-element");
-    } else e.target.classList.add("hovered-element");
-  }
-
-  // Keeps the user from clicking the label to check the checkbox and allows for cursor to change styles (grab and grabbing)
-  const label = document.getElementById("checkBox");
-
-  label.addEventListener("click", (event) => {
-    if (event.target !== checkBox) {
-      event.preventDefault();
-    }
-  });
-
-  label.addEventListener("mouseup", () => {
-    label.style.cursor = "grab";
-  });
-
-  label.addEventListener("mousedown", () => {
-    label.style.cursor = "grabbing";
-  });
+  // Keeps the user from clicking the label to check the checkboxes and allows for cursor to change styles (grab and grabbing)
 });
 
-// Remove border when mouse leaves the element
-window.addEventListener("mouseout", (e) => {
-  e.target.classList.remove("hovered-element");
+
+/* === === === PREVENT LABEL FROM CHECKING CHECK BOX === === === */
+
+window.addEventListener('mouseover', () => {
+   hoverBordersCheckBox_label.addEventListener("click", (e) => {
+     if (e.target !== hoveredBorders_input) {
+       e.preventDefault();
+     }
+   });
+   
+   hoverBordersCheckBox_label.addEventListener("mouseup", () => {
+     hoverBordersCheckBox_label.style.cursor = "grab";
+   });
+   
+   hoverBordersCheckBox_label.addEventListener("mousedown", () => {
+     hoverBordersCheckBox_label.style.cursor = "grabbing";
+   });
+   
+   allBordersCheckBox_label.addEventListener("click", (e) => {
+   if (e.target !== allBorders_input) {
+     e.preventDefault();
+   }
+   });
+   
+   allBordersCheckBox_label.addEventListener("mouseup", () => {
+   allBordersCheckBox_label.style.cursor = "grab";
+   });
+   
+   allBordersCheckBox_label.addEventListener("mousedown", () => {
+   allBordersCheckBox_label.style.cursor = "grabbing";
+   });
+
+   // Remove border when mouse leaves the element
+   window.addEventListener("mouseout", (e) => {
+     e.target.classList.remove("hovered-element");
+   });
 });
+
+
+
+/*  === === === CHECK BOX CODE === === === */
+
+const hoverBordersCheckBox_label = document.getElementById("hoverBordersCheckBox_label");
+const hoveredBorders_input = document.getElementById("hoveredBorders_input");
+const allBordersCheckBox_label = document.getElementById("allBordersCheckBox_label");
+const allBorders_input = document.getElementById("allBorders_input");
+const allBorders_selected = document.querySelectorAll("*:not(.noShow)"); // Select all except those with noShow class
+
+// Check to see if user wants a border on or off
+const hovering = () => {
+   window.addEventListener("mouseover", (e) => {
+     if (hoveredBorders_input.checked) {
+       if (e.target.classList.contains("noShow")) {
+         e.target.classList.remove("hovered-element");
+       } else e.target.classList.add("hovered-element");
+     }
+     
+   });
+}
+
+hovering();
+
 
 // to put a border around all elements without hovering
-
-// const allBorders = document.querySelectorAll("*");
-// const allCheckBox = document.getElementById('allBorderCheck')
-
-// allCheckBox.addEventListener('click', () => {
-//    if (allCheckBox.checked) {
-
-//       allBorders.forEach((element) => {
-//           if (element.classList.contains('noShow')) {
-//               element.style.border = 'none';
-//           } else {
-//             element.style.boxShadow = 'rgb(0, 145, 255) 0px 0px 0px 1px';
-
-//           }
-//       });
-//     } else allBorders.forEach((element) => {
-//       element.style.border = 'none'
-//     })
-// })
+allBorders_input.addEventListener("change", () => {
+  if (allBorders_input.checked) {
+    allBorders_selected.forEach((element) => {
+      element.style.boxShadow = "rgb(0, 145, 255) 0px 0px 0px 1px";
+   });
+   } 
+   else {
+      allBorders_selected.forEach((element) => {
+         element.style.boxShadow = null;
+      });
+   }
+});
 
 
-
-
-// --- --- --- --- ---
+/* === === === DRAGGABLE CODE === === === */
 
 // Make it draggable
 const draggable = document.getElementById("draggable");
@@ -109,20 +142,6 @@ let offsetX = 0;
 let offsetY = 0;
 let isDragging = false;
 
-// Load position from sessionStorage
-const savedLeft = sessionStorage.getItem("draggableLeft");
-const savedTop = sessionStorage.getItem("draggableTop");
-
-if (savedLeft !== null && savedTop !== null) {
-  draggable.style.left = `${savedLeft}px`;
-  draggable.style.top = `${savedTop}px`;
-}
-
-// Load checkbox state from sessionStorage
-const savedCheckboxState = sessionStorage.getItem("checkboxState");
-if (savedCheckboxState !== null) {
-  checkBox.checked = JSON.parse(savedCheckboxState);
-}
 
 draggable.addEventListener("mousedown", (event) => {
   // Calculate the offset from the element's position
@@ -162,7 +181,34 @@ document.addEventListener("mouseup", () => {
   }
 });
 
+/* === === === SESSION STORAGE CODE === === === */
+
+// Load position from sessionStorage
+const savedLeft = sessionStorage.getItem("draggableLeft");
+const savedTop = sessionStorage.getItem("draggableTop");
+
+if (savedLeft !== null && savedTop !== null) {
+  draggable.style.left = `${savedLeft}px`;
+  draggable.style.top = `${savedTop}px`;
+}
+
+// Load checkbox state from sessionStorage
+const savedCheckboxState = sessionStorage.getItem("checkboxState");
+const savedAllCheckboxState = sessionStorage.getItem("allcheckboxState");
+
+if (savedCheckboxState !== null) {
+  hoveredBorders_input.checked = JSON.parse(savedCheckboxState);
+}
+
+if (savedAllCheckboxState !== null) {
+  allBorders_input.checked = JSON.parse(savedAllCheckboxState);
+}
+
 // Save checkbox state to sessionStorage when it changes
-checkBox.addEventListener("change", () => {
-  sessionStorage.setItem("checkboxState", checkBox.checked);
+hoveredBorders_input.addEventListener("change", () => {
+  sessionStorage.setItem("checkboxState", hoveredBorders_input.checked);
+});
+
+allBorders_input.addEventListener("change", () => {
+  sessionStorage.setItem("allcheckboxState", allBorders_input.checked);
 });
