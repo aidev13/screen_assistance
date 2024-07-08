@@ -19,12 +19,21 @@ const htmlContent = `
 // Set the HTML content to an element using innerHTML
 document.getElementById("screen_assistance").innerHTML = htmlContent;
 
+/* === === === VARIABLES === === === */
+
 let size = document.getElementById("size");
-
 let elName = document.getElementById("getName");
+const hoverBordersCheckBox_label = document.getElementById(
+  "hoverBordersCheckBox_label"
+);
+const hoveredBorders_input = document.getElementById("hoveredBorders_input");
+const allBordersCheckBox_label = document.getElementById(
+  "allBordersCheckBox_label"
+);
+const allBorders_input = document.getElementById("allBorders_input");
+const allBorders_selected = document.querySelectorAll("*:not(.noShow)"); // Select all except those with noShow class
 
-
-
+/* === === === SCREEN SIZE AND ELEMENT DISPLAY CODE === === === */
 
 //  Gets the size of the screen in width (W) and height (H).
 const updateSize = () => {
@@ -51,87 +60,104 @@ window.addEventListener("mouseover", (e) => {
   if (e.target.classList.contains("noShow")) {
     elName.innerText = "";
   } else elName.innerText = `Element: ${tagName}${id}${className}`;
-
-  // Keeps the user from clicking the label to check the checkboxes and allows for cursor to change styles (grab and grabbing)
 });
-
 
 /* === === === PREVENT LABEL FROM CHECKING CHECK BOX === === === */
+// Keeps the user from clicking the label to check the checkboxes and allows for cursor to change styles (grab and grabbing)
 
-window.addEventListener('mouseover', () => {
-   hoverBordersCheckBox_label.addEventListener("click", (e) => {
-     if (e.target !== hoveredBorders_input) {
-       e.preventDefault();
-     }
-   });
-   
-   hoverBordersCheckBox_label.addEventListener("mouseup", () => {
-     hoverBordersCheckBox_label.style.cursor = "grab";
-   });
-   
-   hoverBordersCheckBox_label.addEventListener("mousedown", () => {
-     hoverBordersCheckBox_label.style.cursor = "grabbing";
-   });
-   
-   allBordersCheckBox_label.addEventListener("click", (e) => {
-   if (e.target !== allBorders_input) {
-     e.preventDefault();
-   }
-   });
-   
-   allBordersCheckBox_label.addEventListener("mouseup", () => {
-   allBordersCheckBox_label.style.cursor = "grab";
-   });
-   
-   allBordersCheckBox_label.addEventListener("mousedown", () => {
-   allBordersCheckBox_label.style.cursor = "grabbing";
-   });
+window.addEventListener("mouseover", () => {
+  hoverBordersCheckBox_label.addEventListener("click", (e) => {
+    if (e.target !== hoveredBorders_input) {
+      e.preventDefault();
+    }
+  });
 
-   // Remove border when mouse leaves the element
-   window.addEventListener("mouseout", (e) => {
-     e.target.classList.remove("hovered-element");
-   });
+  hoverBordersCheckBox_label.addEventListener("mouseup", () => {
+    hoverBordersCheckBox_label.style.cursor = "grab";
+  });
+
+  hoverBordersCheckBox_label.addEventListener("mousedown", () => {
+    hoverBordersCheckBox_label.style.cursor = "grabbing";
+  });
+
+  allBordersCheckBox_label.addEventListener("click", (e) => {
+    if (e.target !== allBorders_input) {
+      e.preventDefault();
+    }
+  });
+
+  allBordersCheckBox_label.addEventListener("mouseup", () => {
+    allBordersCheckBox_label.style.cursor = "grab";
+  });
+
+  allBordersCheckBox_label.addEventListener("mousedown", () => {
+    allBordersCheckBox_label.style.cursor = "grabbing";
+  });
 });
-
-
 
 /*  === === === CHECK BOX CODE === === === */
 
-const hoverBordersCheckBox_label = document.getElementById("hoverBordersCheckBox_label");
-const hoveredBorders_input = document.getElementById("hoveredBorders_input");
-const allBordersCheckBox_label = document.getElementById("allBordersCheckBox_label");
-const allBorders_input = document.getElementById("allBorders_input");
-const allBorders_selected = document.querySelectorAll("*:not(.noShow)"); // Select all except those with noShow class
-
 // Check to see if user wants a border on or off
 const hovering = () => {
-   window.addEventListener("mouseover", (e) => {
-     if (hoveredBorders_input.checked) {
-       if (e.target.classList.contains("noShow")) {
-         e.target.classList.remove("hovered-element");
-       } else e.target.classList.add("hovered-element");
-     }
-     
-   });
-}
+  window.addEventListener("mouseover", (e) => {
+    if (hoveredBorders_input.checked) {
+      if (e.target.classList.contains("noShow")) {
+        e.target.classList.remove("hovered-element");
+      } else e.target.classList.add("hovered-element");
+    }
+  });
+};
+// Remove border when mouse leaves the element
+const removerHoveredBorder = () => {
+  window.addEventListener("mouseout", (e) => {
+    e.target.classList.remove("hovered-element");
+  });
+};
 
 hovering();
+removerHoveredBorder();
 
+const addAllBorders = () => {
+  allBorders_selected.forEach((element) => {
+    element.style.boxShadow = "0 0 0 1px rgb(0, 145, 255)";
+    element.classList.add("borderOn");
+  });
+};
 
+const removeAllBorders = () => {
+  allBorders_selected.forEach((element) => {
+    element.style.boxShadow = "none";
+    element.classList.remove("borderOn");
+  });
+};
 // to put a border around all elements without hovering
-allBorders_input.addEventListener("change", () => {
+allBorders_input.addEventListener("change", (e) => {
   if (allBorders_input.checked) {
-    allBorders_selected.forEach((element) => {
-      element.style.boxShadow = "rgb(0, 145, 255) 0px 0px 0px 1px";
-   });
-   } 
-   else {
-      allBorders_selected.forEach((element) => {
-         element.style.boxShadow = null;
-      });
-   }
+    addAllBorders();
+  } else {
+    removeAllBorders();
+  }
 });
 
+window.addEventListener("mouseover", (e) => {
+  if (
+    allBorders_input.checked &&
+    hoveredBorders_input.checked &&
+    e.target.classList.contains("borderOn")
+  ) {
+    e.target.classList.add("hovered-bg-color");
+  }
+});
+
+window.addEventListener("mouseout", (e) => {
+  if (
+    allBorders_input.checked &&
+    hoveredBorders_input.checked &&
+    e.target.classList.contains("borderOn")
+  ) {
+    e.target.classList.remove("hovered-bg-color");
+  }
+});
 
 /* === === === DRAGGABLE CODE === === === */
 
@@ -141,7 +167,6 @@ const draggable = document.getElementById("draggable");
 let offsetX = 0;
 let offsetY = 0;
 let isDragging = false;
-
 
 draggable.addEventListener("mousedown", (event) => {
   // Calculate the offset from the element's position
@@ -198,10 +223,16 @@ const savedAllCheckboxState = sessionStorage.getItem("allcheckboxState");
 
 if (savedCheckboxState !== null) {
   hoveredBorders_input.checked = JSON.parse(savedCheckboxState);
+  if (hoveredBorders_input.checked) {
+    hovering();
+  } else removerHoveredBorder();
 }
 
 if (savedAllCheckboxState !== null) {
   allBorders_input.checked = JSON.parse(savedAllCheckboxState);
+  if (allBorders_input.checked) {
+    addAllBorders();
+  }
 }
 
 // Save checkbox state to sessionStorage when it changes

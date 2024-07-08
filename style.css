@@ -9,8 +9,12 @@ body {
    box-shadow: rgb(255, 0, 0) 0px 0px 0px 1px;
 }
 
+.hovered-bg-color {
+   background-color: rgb(235, 235, 235);
+}
+
 .screen-assistance-container {
-   background-color: rgba(234, 234, 234, 0.986); 
+   background-color: rgba(255, 255, 255, 0.986); 
    position: fixed; 
    border-radius: 12px; 
    font-size: 12px; 
